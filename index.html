@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2025!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lobster&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            text-align: center;
+            background: radial-gradient(circle, #ff9a9e, #fad0c4, #fbc2eb, #8fd3f4);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            animation: fadeIn 2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            text-shadow: 3px 3px #f48fb1;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            margin: 10px 0;
+            font-size: 1rem;
+            width: 70%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .gender-select {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .gender-select label {
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #ff6ec7;
+            color: white;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .gender-select input {
+            display: none;
+        }
+
+        .gender-select input:checked + label {
+            background-color: #e055ad;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            background-color: #ff6ec7;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e055ad;
+        }
+
+        #greeting {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            text-shadow: 1px 1px #f48fb1;
+        }
+
+        .small-text {
+            font-size: 0.9rem;
+            color: #ffeb3b;
+            font-family: 'Pacifico', cursive;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .rain,
+        .sparkle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .rain {
+            width: 2px;
+            height: 15px;
+            background: white;
+            opacity: 0.8;
+            animation: rain-fall 2s linear infinite;
+        }
+
+        .sparkle {
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #fff, transparent);
+            animation: sparkle 1s ease-out infinite;
+        }
+
+        @keyframes rain-fall {
+            from {
+                top: -20px;
+                opacity: 1;
+            }
+            to {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes sparkle {
+            from {
+                transform: scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🎉 Welcome to 2025! 🎊</h1>
+    <p>Type your cute name and select your gender for a personalized New Year wish:</p>
+    <input type="text" id="nameInput" placeholder="Enter your cute name" />
+    <div class="gender-select">
+        <input type="radio" id="male" name="gender" value="Male" />
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="Female" />
+        <label for="female">Female</label>
+    </div>
+    <button onclick="generateWish(event)">Get Wishes</button>
+    <div id="greeting"></div>
+
+    <!-- Local audio elements -->
+    <audio id="maleAudio" src="male_audio.mp3"></audio>
+    <audio id="femaleAudio" src="female_audio.mp3"></audio>
+
+    <script>
+        // Simulate constant rain before the button is clicked
+        createRain(50);
+
+        function generateWish(event) {
+            const name = document.getElementById("nameInput").value.trim();
+            const genderInputs = document.getElementsByName("gender");
+            let gender = "";
+
+            // Find the selected gender
+            for (const input of genderInputs) {
+                if (input.checked) {
+                    gender = input.value;
+                    break;
+                }
+            }
+
+            const greeting = document.getElementById("greeting");
+            const maleAudio = document.getElementById("maleAudio");
+            const femaleAudio = document.getElementById("femaleAudio");
+
+            if (name === "" || gender === "") {
+                greeting.innerHTML = "🎇 Please enter your name and select your gender! 🎆";
+                return;
+            }
+
+            // Stop any playing audio
+            maleAudio.pause();
+            maleAudio.currentTime = 0;
+            femaleAudio.pause();
+            femaleAudio.currentTime = 0;
+
+            const maleWishes = [
+                `🌟 ${name}, may 2025 bring you bold successes and joyful moments!`,
+                `🎉 ${name}, here's to a year of strength, adventure, and growth!`,
+                `✨ Shine bright, ${name}! Your determination will lead you to greatness!`
+            ];
+
+            const femaleWishes = [
+                `🌸 ${name}, may 2025 be as beautiful and graceful as you are!`,
+                `🌟 ${name}, let your elegance light up every path this year!`,
+                `💕 ${name}, keep smiling because you make the world a better place!`
+            ];
+
+            const randomWish =
+                gender === "Male"
+                    ? maleWishes[Math.floor(Math.random() * maleWishes.length)]
+                    : femaleWishes[Math.floor(Math.random() * femaleWishes.length)];
+
+            greeting.innerHTML = `${randomWish}<span class="small-text">- Wishes from Chiru</span>`;
+
+            // Play the appropriate audio
+            if (gender === "Male") {
+                maleAudio.play();
+            } else if (gender === "Female") {
+                femaleAudio.play();
+            }
+
+            // Switch rain effect after button click
+            document.querySelectorAll('.rain').forEach(el => el.remove());
+            createRain(70, '#ffeb3b', '1px', '10px'); // Golden rain
+        }
+
+        function createRain(count, color = 'white', width = '2px', height = '15px') {
+            for (let i = 0; i < count; i++) {
+                const rain = document.createElement("div");
+                rain.className = "rain";
+                rain.style.left = `${Math.random() * 100}vw`;
+                rain.style.animationDelay = `${Math.random() * 2}s`;
+                rain.style.backgroundColor = color;
+                rain.style.width = width;
+                rain.style.height = height;
+
+                document.body.appendChild(rain);
+            }
+        }
+    </script>
+</body>
+</html>
